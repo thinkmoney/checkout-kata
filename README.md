@@ -3,6 +3,9 @@
 Go run . will start the program that reads in user input. Type in the SKU of the item that is being scanned.
 The total will be calculated as you go along. When finished, type: END, and the total will be printed.
 
+Alternatively you can run the tests in the `checkout` directory by changing to that directory and running:
+`go test`
+
 # Checkout Kata
 
 Implement the code for a checkout system that handles pricing schemes such as "pineapples cost 50, three pineapples cost 130."
