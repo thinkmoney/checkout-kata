@@ -6,48 +6,85 @@ import (
 )
 
 func TestScan(t *testing.T) {
+	testCases := []struct {
+		sku          rune
+		scannedItem  ScannedItem
+		scannedError error
+	}{
+		{
+			sku: 'A',
+			scannedItem: ScannedItem{
+				quantityScanned: 1,
+			},
+			scannedError: nil,
+		},
+		{
+			sku: 'A',
+			scannedItem: ScannedItem{
+				quantityScanned: 2,
+			},
+			scannedError: nil,
+		},
+		{
+			sku:          '|',
+			scannedError: ErrItemDoesntExist,
+		},
+	}
+
+	scanner := New()
+
+	for _, tc := range testCases {
+		item, err := scanner.Scan(tc.sku)
+		if item.quantityScanned != tc.scannedItem.quantityScanned {
+			t.Fatalf(
+				"quantity scanned does not match expected. Wanted: %v, got: %v",
+				tc.scannedItem.quantityScanned,
+				item.quantityScanned,
+			)
+		}
+
+		if !errors.Is(tc.scannedError, err) {
+			t.Fatalf(
+				"received mismatch of expected error value. Wanted: %v, got: %v",
+				tc.scannedError,
+				err,
+			)
+		}
+	}
+}
+
+func TestGetTotalPrice(t *testing.T) {
     testCases := []struct{
-        sku rune
-        scannedItem ScannedItem
-        scannedError error
+        skuScanList []rune
+        expectedTotal int
     } {
         {
-            sku: 'A',
-            scannedItem: ScannedItem{
-                quantityScanned: 1,
-            },
-            scannedError: nil,
+            skuScanList: []rune{'A', 'A', 'A'},
+            expectedTotal: 130,
         },
         {
-            sku: 'A',
-            scannedItem: ScannedItem{
-                quantityScanned: 2,
-            },
-            scannedError: nil,
-        },
-        {
-            sku: '|',
-            scannedError: ErrItemDoesntExist,
+            skuScanList: []rune{'A', 'A', 'A', 'A'},
+            expectedTotal: 150,
         },
     }
-
+    
     scanner := New()
 
     for _, tc := range testCases {
-        item, err := scanner.Scan(tc.sku)
-        if item.quantityScanned != tc.scannedItem.quantityScanned {
-            t.Fatalf(
-                "quantity scanned does not match expected. Wanted: %v, got: %v",
-                tc.scannedItem.quantityScanned,
-                item.quantityScanned,
-            )
+        for _, sku := range tc.skuScanList {
+            _, err := scanner.Scan(sku)
+            if err != nil {
+                t.Fatal(err)
+            }
         }
 
-        if !errors.Is(tc.scannedError, err) {
+        total := scanner.GetTotalPrice()
+        if total != tc.expectedTotal {
             t.Fatalf(
-                "received mismatch of expected error value. Wanteed: %v, got: %v",
-                tc.scannedError,
-                err,
+                "received invalid total for SKUs: %c. Expected: %v, received: %v",
+                tc.skuScanList,
+                tc.expectedTotal,
+                total,
             )
         }
     }
