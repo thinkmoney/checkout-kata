@@ -6,40 +6,34 @@ type SpecialPrice struct {
 }
 
 type Item struct {
-    SKU rune
     UnitPrice int
     SpecialPrice SpecialPrice
 }
 
-var allItems []Item = make([]Item, 0, 26)
+var allItems map[rune]Item = make(map[rune]Item)
 
 func init() {
-
-    allItems = append(allItems, Item{
-        SKU: 'A',
+    allItems['A'] = Item{
         UnitPrice: 50,
         SpecialPrice: SpecialPrice{
             Quantity: 3,
             Price: 130,
         },
-    })
+    }
 
-    allItems = append(allItems, Item{
-        SKU: 'B',
+    allItems['B'] =  Item{
         UnitPrice: 30,
         SpecialPrice: SpecialPrice{
             Quantity: 2,
             Price: 45,
         },
-    })
+    }
 
-    allItems = append(allItems, Item{
-        SKU: 'C',
+    allItems['C'] =  Item{
         UnitPrice: 20,
-    })
+    }
 
-    allItems = append(allItems, Item{
-        SKU: 'D',
+    allItems['D'] = Item{
         UnitPrice: 15,
-    })
+    }
 }
