@@ -1,5 +1,7 @@
 package checkout
 
+import "fmt"
+
 type SpecialPrice struct {
 	Quantity int
 	Price    int
@@ -10,7 +12,17 @@ type Item struct {
 	SpecialPrice SpecialPrice
 }
 
+
 var allItems map[rune]Item = make(map[rune]Item)
+
+func PrintAllItemKeys() {
+    keys := make([]rune, 0, len(allItems))
+    for k := range allItems {
+        keys = append(keys, k)
+    }
+    
+    fmt.Printf("%c\n", keys)
+}
 
 func init() {
 	allItems['A'] = Item{
