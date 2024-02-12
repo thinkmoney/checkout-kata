@@ -54,55 +54,54 @@ func TestScan(t *testing.T) {
 }
 
 func TestGetTotalPrice(t *testing.T) {
-    testCases := []struct{
-        skuScanList []rune
-        expectedTotal int
-    } {
-        {
-            skuScanList: []rune{'A', 'A'},
-            expectedTotal: allItems['A'].UnitPrice * 2, 
-        },
-        {
-            skuScanList: []rune{'A', 'A', 'A'},
-            expectedTotal: allItems['A'].SpecialPrice.Price,
-        },
-        {
-            skuScanList: []rune{'A', 'A', 'A', 'A'},
-            expectedTotal: allItems['A'].SpecialPrice.Price + allItems['A'].UnitPrice,
-        },
-        {
-            skuScanList: []rune{'A', 'A', 'A', 'A', 'A', 'A'},
-            expectedTotal: allItems['A'].SpecialPrice.Price * 2,
-        },
-        {
-            skuScanList: []rune{'A', 'B', 'A', 'A'},
-            expectedTotal: allItems['A'].SpecialPrice.Price + allItems['B'].UnitPrice,
-        },
-        {
-            skuScanList: []rune{'A', 'B', 'A', 'B', 'A'},
-            expectedTotal: allItems['A'].SpecialPrice.Price + allItems['B'].SpecialPrice.Price,
-        },
-    }
-    
+	testCases := []struct {
+		skuScanList   []rune
+		expectedTotal int
+	}{
+		{
+			skuScanList:   []rune{'A', 'A'},
+			expectedTotal: allItems['A'].UnitPrice * 2,
+		},
+		{
+			skuScanList:   []rune{'A', 'A', 'A'},
+			expectedTotal: allItems['A'].SpecialPrice.Price,
+		},
+		{
+			skuScanList:   []rune{'A', 'A', 'A', 'A'},
+			expectedTotal: allItems['A'].SpecialPrice.Price + allItems['A'].UnitPrice,
+		},
+		{
+			skuScanList:   []rune{'A', 'A', 'A', 'A', 'A', 'A'},
+			expectedTotal: allItems['A'].SpecialPrice.Price * 2,
+		},
+		{
+			skuScanList:   []rune{'A', 'B', 'A', 'A'},
+			expectedTotal: allItems['A'].SpecialPrice.Price + allItems['B'].UnitPrice,
+		},
+		{
+			skuScanList:   []rune{'A', 'B', 'A', 'B', 'A'},
+			expectedTotal: allItems['A'].SpecialPrice.Price + allItems['B'].SpecialPrice.Price,
+		},
+	}
 
-    for _, tc := range testCases {
-        scanner := New()
+	for _, tc := range testCases {
+		scanner := New()
 
-        for _, sku := range tc.skuScanList {
-            _, err := scanner.Scan(sku)
-            if err != nil {
-                t.Fatal(err)
-            }
-        }
+		for _, sku := range tc.skuScanList {
+			_, err := scanner.Scan(sku)
+			if err != nil {
+				t.Fatal(err)
+			}
+		}
 
-        total := scanner.GetTotalPrice()
-        if total != tc.expectedTotal {
-            t.Fatalf(
-                "received invalid total for SKUs: %c. Expected: %v, received: %v",
-                tc.skuScanList,
-                tc.expectedTotal,
-                total,
-            )
-        }
-    }
+		total := scanner.GetTotalPrice()
+		if total != tc.expectedTotal {
+			t.Fatalf(
+				"received invalid total for SKUs: %c. Expected: %v, received: %v",
+				tc.skuScanList,
+				tc.expectedTotal,
+				total,
+			)
+		}
+	}
 }
