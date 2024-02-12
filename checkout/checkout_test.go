@@ -64,13 +64,14 @@ func TestGetTotalPrice(t *testing.T) {
         },
         {
             skuScanList: []rune{'A', 'A', 'A', 'A'},
-            expectedTotal: 150,
+            expectedTotal: 180,
         },
     }
     
-    scanner := New()
 
     for _, tc := range testCases {
+        scanner := New()
+
         for _, sku := range tc.skuScanList {
             _, err := scanner.Scan(sku)
             if err != nil {
