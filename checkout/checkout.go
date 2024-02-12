@@ -1,9 +1,13 @@
 package checkout
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+	"math"
+)
 
 type ScannedItem struct {
-	quantityScanned uint
+	quantityScanned int
 }
 
 type Scanner struct {
@@ -37,4 +41,30 @@ func (s *Scanner) Scan(SKU rune) (ScannedItem, error) {
 		s.scannedItems[SKU] = toReturn
         return toReturn, nil
 	}
+}
+
+func (s Scanner) GetTotalPrice() int {
+    total := 0 
+
+    for key, scannedItem := range s.scannedItems {
+        // NOTE: There's a potentially missed defensive coding opportunity here.
+        // Theoretically, the item might not exist, though practically the only way of entering the data is 
+        // via the Scan function, which already handles the case where an item is not registered
+        item := allItems[key]
+
+        if item.SpecialPrice.Quantity > scannedItem.quantityScanned {
+            total += scannedItem.quantityScanned * item.UnitPrice
+            continue
+        }
+
+        if item.SpecialPrice.Quantity == scannedItem.quantityScanned {
+            total += item.SpecialPrice.Price
+            continue
+        }
+        
+        if item.SpecialPrice.Quantity < scannedItem.quantityScanned {
+        }
+    }
+
+    return total
 }
