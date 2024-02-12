@@ -60,11 +60,15 @@ func TestGetTotalPrice(t *testing.T) {
     } {
         {
             skuScanList: []rune{'A', 'A', 'A'},
-            expectedTotal: 130,
+            expectedTotal: allItems['A'].SpecialPrice.Price,
         },
         {
             skuScanList: []rune{'A', 'A', 'A', 'A'},
-            expectedTotal: 180,
+            expectedTotal: allItems['A'].SpecialPrice.Price + allItems['A'].UnitPrice,
+        },
+        {
+            skuScanList: []rune{'A', 'B', 'A', 'A'},
+            expectedTotal: allItems['A'].SpecialPrice.Price + allItems['B'].UnitPrice,
         },
     }
     
