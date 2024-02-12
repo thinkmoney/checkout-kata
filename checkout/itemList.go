@@ -1,7 +1,7 @@
 package checkout
 
 type SpecialPrice struct {
-	Quantity uint
+	Quantity int
 	Price    int
 }
 
