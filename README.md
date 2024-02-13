@@ -22,3 +22,11 @@ interface ICheckout
     int GetTotalPrice();
 }
 ```
+
+
+
+### My Implementation Notes
+
+Hey, had fun doing this one, hope the implementation is clear and covers all bases. Small note to the reviewer, I decided to go ahead and make the pricing rules config driven via a JSON file even though it wasn't in scope as this would make this service a little more flexible given some pricing rule needed to be updated in prodcution, as it'd save the hassle of getting an entire new change through ci/cd, QA, test, and deployment if there were any issues. Though, of course, this would still need to be a change that was deployed alongside a new version once this live issues was resolved and we had the breathing room.
+
+Could have hardcoded those values for the sake of this demo but preferred this option as gives a little more flexibility.
